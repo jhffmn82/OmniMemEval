@@ -67,6 +67,7 @@ the reproduced OmniMemEval scores.
 | Backboard.io | 22.40 | - | - | - | - | - |
 | MemOS | 88.83 | 89.20 | 66.87 | 56.75 | 40.58 | 80.91 |
 | LCM-X | 78.83 | 87.00 | 71.84 | 63.32 | 33.96 | 81.68 |
+| Maasv | 87.73 | 91.20 | 76.38 | 65.09 | 39.86 | 82.29 |
 
 LCM-X rows are contributor-run: the LCM-X maintainers ran the unchanged pipeline
 and prompts on **2026-10-18** with OmniMemEval harness commit
@@ -85,6 +86,16 @@ for the complete input pin and evidence limitations. The LCM-X BEAM 10M cell
 comes from a separate contributor run on **2026-10-22** with LCM-X v0.28.0; see
 [LCM-X BEAM 10M run](./lcmx.md#beam-10m-run-2026-10-22) for its harness commits,
 evidence archive and limitations.
+
+The Maasv rows (LoCoMo, LongMemEval, BEAM 100K, BEAM 10M, HaluMem and
+PersonaMem v2) are contributor-run: the Maasv team ran the unchanged pipeline
+and prompts on **2026-10-31** (LoCoMo and BEAM 100K) and **2026-11-01**
+(HaluMem, PersonaMem v2, LongMemEval and BEAM 10M) with OmniMemEval harness
+commit `7c79d46` plus the `maasv` adapter commit, using a self-hosted Maasv
+v0.4.48 service (one store per evaluation user, top-k 20) and the dated models from
+the direct OpenAI API. Maasv is not open source; the per-question records
+support artifact arithmetic and answer/judge replay.
+See [Maasv deployment and result provenance](./maasv.md#result-provenance).
 
 A dash (`-`) means that a reproduced result is not included in this snapshot.
 For these missing cells, full runs were not completed under the same evaluation
@@ -124,6 +135,7 @@ adversarial questions and covers 1,540 questions.
 | Backboard.io | cloud | 25.09 | 22.34 | 13.40 | 29.17 | 22.40 | 1,198 |
 | MemOS | cloud | 92.51 | 88.65 | 85.05 | 69.79 | 88.83 | 5,400 |
 | LCM-X | local/self-hosted | 84.30 | 66.31 | 79.75 | 64.58 | 78.83 | 1,659 |
+| Maasv | local/self-hosted | 91.80 | 82.98 | 85.98 | 71.88 | 87.73 | 1,551 |
 
 ### Published Reference Results
 
@@ -143,6 +155,7 @@ adversarial questions and covers 1,540 questions.
 | CPersona (pro) | 88.70 | 78.01 | 83.18 | 63.54 | 84.03 | 4,441 | [CPersona run records](https://github.com/Cloto-dev/cpersona-omnimemeval-2.6.11) (this harness at `0b1ea8d`; the 1,540-question non-adversarial subset, categories 1–4; answers `gpt-4.1-mini-2025-04-14`, judge `gpt-4o-mini`) |
 | CPersona (lite) | 73.84 | 51.06 | 72.59 | 54.17 | 68.18 | 1,485 | [CPersona run records](https://github.com/Cloto-dev/cpersona-omnimemeval-2.6.11) (this harness at `0b1ea8d`; the 1,540-question non-adversarial subset, categories 1–4; answers `gpt-4.1-mini-2025-04-14`, judge `gpt-4o-mini`) |
 | Hojo MemoryEngine | 92.98 | 81.91 | 85.36 | 72.92 | 88.12 | - | [Hojo evaluation details: 1,540-question non-adversarial subset](./hojo_reference_results.md#locomo) |
+| ThreadAtlas | 94.17 | 83.69 | 86.29 | 71.88 | 89.22 | 6,190 | [ThreadAtlas run records](https://github.com/jhffmn82/threadatlas/tree/dff7388606c3979c410195e28ce0b59cf4faa97a/omnimemeval) (contributor-run, 1,540 non-adversarial questions; memory reading uses `gpt-5.6-luna`, not the shared baseline; [methodology](./threadatlas.md#version-deployment-and-settings-of-the-reported-runs)) |
 
 ## LongMemEval
 
@@ -177,6 +190,7 @@ questions; it is not the unweighted mean of the six category percentages.
 | mem9 | cloud | 95.71 | 94.64 | 56.67 | 77.44 | 62.41 | 85.90 | 78.00 | 3,805 |
 | MemOS | cloud | 100.00 | 100.00 | 100.00 | 89.47 | 78.95 | 84.62 | 89.20 | 4,151 |
 | LCM-X | local/self-hosted | 95.71 | 94.64 | 96.67 | 85.71 | 75.19 | 92.31 | 87.00 | 5,164 |
+| Maasv | local/self-hosted | 98.57 | 98.21 | 93.33 | 89.47 | 86.47 | 89.74 | 91.20 | 3,999 |
 
 ### Published Reference Results
 
@@ -191,6 +205,7 @@ questions; it is not the unweighted mean of the six category percentages.
 | CPersona (pro) | 97.14 | 94.64 | 96.67 | 86.47 | 85.71 | 88.46 | 89.60 | 4,262 | [CPersona run records](https://github.com/Cloto-dev/cpersona-omnimemeval-2.6.11) (this harness at `0b1ea8d`; answers `gpt-4.1-mini-2025-04-14`, judge `gpt-4o-mini`) |
 | CPersona (lite) | 95.71 | 83.93 | 90.00 | 80.45 | 74.44 | 82.05 | 82.20 | 993 | [CPersona run records](https://github.com/Cloto-dev/cpersona-omnimemeval-2.6.11) (this harness at `0b1ea8d`; answers `gpt-4.1-mini-2025-04-14`, judge `gpt-4o-mini`) |
 | Hojo MemoryEngine | 98.57 | 78.57 | 83.33 | 78.95 | 68.42 | 88.46 | 80.60 | - | [Hojo evaluation details](./hojo_reference_results.md#longmemeval-s) |
+| ThreadAtlas | 100.00 | 96.43 | 86.67 | 83.46 | 79.70 | 89.74 | 87.40 | 4,332 | [ThreadAtlas run records](https://github.com/jhffmn82/threadatlas/tree/dff7388606c3979c410195e28ce0b59cf4faa97a/omnimemeval) (contributor-run, 500 questions; `gpt-5.6-luna` memory reading and prebuilt sessions from the original dataset; [methodology](./threadatlas.md#version-deployment-and-settings-of-the-reported-runs)) |
 
 ## BEAM
 
@@ -223,6 +238,7 @@ covered, 0.5 for partially covered, and 0.0 for incorrect or missing evidence.
 | mem9 | cloud | 65.75 +/- 38.92 | 5,372 | 57.30 +/- 39.03 | 4,947 |
 | MemOS | cloud | 66.87 +/- 37.37 | 1,636 | 56.75 +/- 39.17 | 1,558 |
 | LCM-X | local/self-hosted | 71.84 +/- 34.86 | 11,926 | 63.32 +/- 40.02 | 9,625 |
+| Maasv | local/self-hosted | 76.38 +/- 32.50 | 8,526 | 65.09 +/- 38.85 | 8,656 |
 
 The LCM-X 10M cell is a single contributor run (200 questions, 2026-10-22); the
 +/- figure is the per-question standard deviation printed by the harness. See
@@ -271,6 +287,7 @@ the gold answer; repeated runs are averaged.
 | mem9 | cloud | 32.28 | 22.90 | 32.57 | 34.50 | 25.05 | 38.27 | 33.33 | 30.76 | 2,045 |
 | MemOS | cloud | 33.80 | 57.82 | 32.57 | 35.66 | 36.59 | 39.40 | 39.23 | 40.58 | 1,908 |
 | LCM-X | local/self-hosted | 32.98 | 32.82 | 34.15 | 31.59 | 32.68 | 39.21 | 36.84 | 33.96 | 3,534 |
+| Maasv | local/self-hosted | 36.14 | 53.24 | 34.33 | 35.66 | 33.46 | 41.28 | 37.32 | 39.86 | 2,930 |
 
 ### Published Reference Results
 
@@ -311,6 +328,7 @@ multi-hop inference, and dynamic updates.
 | mem9 | cloud | 54.56 | 94.20 | 68.79 | 80.16 | 70.71 | 38.89 | 72.80 | 893 |
 | MemOS | cloud | 69.03 | 91.30 | 86.48 | 83.51 | 74.24 | 55.00 | 80.91 | 1,187 |
 | LCM-X | local/self-hosted | 73.06 | 89.73 | 85.96 | 82.31 | 78.79 | 62.78 | 81.68 | 1,985 |
+| Maasv | local/self-hosted | 71.72 | 91.91 | 87.52 | 82.17 | 79.80 | 62.78 | 82.29 | 2,241 |
 
 ### Published Reference Results
 
