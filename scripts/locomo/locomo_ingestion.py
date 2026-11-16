@@ -37,6 +37,11 @@ def ingest_session(client, session, frame, metadata):
     speaker_b_messages = []
     for chat in session:
         data = chat.get("speaker") + ": " + chat.get("text")
+        # LoCoMo ships a description with every shared photo (blip_caption), and
+        # some questions ask about these photos. ThreadAtlas keeps it with the
+        # message, in the words Zep graph mode and Graphiti use below.
+        if frame == "threadatlas" and chat.get("blip_caption"):
+            data += f" (description of attached image: {chat.get('blip_caption')})"
         if chat.get("speaker") == metadata["speaker_a"]:
             speaker_a_messages.append({
                 "role": "user", "name": metadata["speaker_a"], "content": data,

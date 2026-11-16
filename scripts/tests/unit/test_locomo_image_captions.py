@@ -64,6 +64,34 @@ class TestLocomoImageCaptions(unittest.TestCase):
             },
         )
 
+    def test_threadatlas_keeps_caption_for_both_speakers(self):
+        from scripts.locomo.locomo_ingestion import ingest_session
+
+        client = Mock()
+        ingest_session(client, SESSION, "threadatlas", dict(META))
+        self.assertEqual(client.add.call_count, 2)
+        for call in client.add.call_args_list:
+            contents = [message["content"] for message in call.args[0]]
+            self.assertEqual(
+                contents,
+                [
+                    "Melanie: Our latest work from last weekend!" + CAPTION_TEXT,
+                    "Caroline: Lovely.",
+                ],
+            )
+
+    def test_other_default_path_backends_are_unchanged(self):
+        from scripts.locomo.locomo_ingestion import ingest_session
+
+        client = Mock()
+        ingest_session(client, SESSION, "mem0", dict(META))
+        for call in client.add.call_args_list:
+            contents = [message["content"] for message in call.args[0]]
+            self.assertEqual(
+                contents,
+                ["Melanie: Our latest work from last weekend!", "Caroline: Lovely."],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
